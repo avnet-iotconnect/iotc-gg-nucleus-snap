@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Greengrass Local Assistant</title>
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <div class="bg-orbit"></div>
+  <div class="app">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Greengrass Local Assistant</p>
+        <h1>Onboard fast. Watch deployments live.</h1>
+        <p class="sub">A local visual guide for IOTCONNECT onboarding and Greengrass health, built on this repo.</p>
+      </div>
+      <div class="hero-card">
+        <p class="label">Setup Script</p>
+        <p class="mono" id="setupScript">{{ setup_script or "Not found" }}</p>
+        <p class="hint">Set <span class="mono">SETUP_SCRIPT_PATH</span> to override.</p>
+      </div>
+    </header>
+
+    <section class="grid">
+      <div class="card tall">
+        <div class="card-header">
+          <div>
+            <h2>/IOTCONNECT Onboarding</h2>
+            <p>Use a connection kit or manual credentials. All runs stay local.</p>
+          </div>
+          <div class="segmented">
+            <button class="segment active" data-panel="kit">Connection Kit</button>
+            <button class="segment" data-panel="manual">Manual</button>
+          </div>
+        </div>
+
+        <div class="panel active" id="panel-kit">
+          <form id="kitForm">
+            <label>
+              <span>Connection kit zip</span>
+              <input type="file" name="kit" accept=".zip" required />
+            </label>
+            <label>
+              <span>Kit extract directory (optional)</span>
+              <input type="text" name="kitDir" placeholder="/var/snap/.../connection-kit" />
+            </label>
+            <label>
+              <span>Greengrass root (optional)</span>
+              <input list="rootCandidates" type="text" name="greengrassRoot" placeholder="/var/snap/.../greengrass/v2" />
+            </label>
+            <button type="submit" class="primary">Run onboarding</button>
+          </form>
+        </div>
+
+        <div class="panel" id="panel-manual">
+          <form id="manualForm">
+            <label>
+              <span>AWS access key</span>
+              <input type="text" name="accessKey" placeholder="AKIA..." required />
+            </label>
+            <label>
+              <span>AWS secret key</span>
+              <input type="password" name="secretKey" placeholder="********" required />
+            </label>
+            <div class="row">
+              <label>
+                <span>Region</span>
+                <input type="text" name="region" placeholder="us-east-1" required />
+              </label>
+              <label>
+                <span>Device name</span>
+                <input type="text" name="deviceName" placeholder="GreengrassCore" required />
+              </label>
+            </div>
+            <label>
+              <span>Greengrass root (optional)</span>
+              <input list="rootCandidates" type="text" name="greengrassRoot" placeholder="/var/snap/.../greengrass/v2" />
+            </label>
+            <button type="submit" class="primary">Run onboarding</button>
+          </form>
+        </div>
+        <div id="onboardMessage" class="message">Ready.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Local Status</h2>
+            <p>Monitor Greengrass process, deployments, and logs.</p>
+          </div>
+          <div class="refresh">
+            <button id="refreshStatus">Refresh</button>
+            <button class="ghost" data-action="start">Start</button>
+            <button class="ghost" data-action="stop">Stop</button>
+            <button class="ghost" data-action="restart">Restart</button>
+            <button class="ghost" data-action="kill">Kill</button>
+            <button class="ghost" data-action="snap-start">Snap Start</button>
+            <button class="ghost" data-action="snap-stop">Snap Stop</button>
+            <button class="ghost" data-action="snap-restart">Snap Restart</button>
+          </div>
+        </div>
+        <div class="status-grid">
+          <div class="status">
+            <span class="label">Process</span>
+            <span id="processStatus" class="value">—</span>
+            <span id="processDetail" class="detail mono">—</span>
+          </div>
+          <div class="status">
+            <span class="label">Deployment</span>
+            <span id="deploymentStatus" class="value">—</span>
+            <span id="deploymentDetail" class="detail">—</span>
+          </div>
+          <div class="status">
+            <span class="label">Last error</span>
+            <span id="lastError" class="detail mono">—</span>
+          </div>
+          <div class="status">
+            <span class="label">Root</span>
+            <span id="rootPath" class="detail mono">—</span>
+          </div>
+        </div>
+        <p class="hint">Last updated: <span id="lastUpdated" class="mono">—</span></p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Run Activity</h2>
+            <p>Latest onboarding runs and exit status.</p>
+          </div>
+        </div>
+        <div id="runs" class="runs">
+          <p class="empty">No runs yet.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Greengrass Log Tail</h2>
+            <p>Last 200 lines from <span class="mono">greengrass.log</span>.</p>
+          </div>
+        </div>
+        <pre id="logTail" class="log">Waiting for logs...</pre>
+      </div>
+    </section>
+  </div>
+
+  <datalist id="rootCandidates"></datalist>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

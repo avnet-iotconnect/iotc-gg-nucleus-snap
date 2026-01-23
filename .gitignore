@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+
+# Local UI dev artifacts
+local-ui/.venv/
+local-ui/data/uploads/
+
+# Local build artifacts
+Temp/
+*.snap
