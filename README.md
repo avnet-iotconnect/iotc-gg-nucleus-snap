@@ -4,6 +4,19 @@ This repository contains the Greengrass v2 Nucleus Classic Snap packages for Ubu
 The primary Snapcraft project is at the repository root (`snapcraft.yaml`). The per-architecture
 folders (`amd64/`, `arm64/`, `armhf/`, `riscv64/`) are kept for reference and legacy local builds.
 
+For end-to-end onboarding instructions, see `quickstart.md`.
+
+## Upstream AWS snap and differences
+
+This snap is derived from the original AWS Greengrass snap project in the AWS Greengrass GitHub organization and includes their work with modifications. See `LICENSE` and `NOTICE` for full attribution and terms.
+
+Key differences in the /IOTCONNECT version:
+- Adds an interactive `/IOTCONNECT` onboarding flow to provision Greengrass using an /IOTCONNECT connection kit.
+- Bundles the `/IOTCONNECT` setup script used by `iotconnect-gg-nucleus.configure`.
+- Focuses on /IOTCONNECT-backed workflows and documentation (see `quickstart.md`).
+
+If you are looking for the original AWS snap, refer to the upstream repository: `https://github.com/aws-greengrass/aws-greengrass-snap`.
+
 ## Attribution
 
 This project includes work derived from Amazon Web Services. See `LICENSE` and `NOTICE` for full terms and attribution.
