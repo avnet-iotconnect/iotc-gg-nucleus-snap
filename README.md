@@ -1,6 +1,8 @@
 # Greengrass (Nucleus Classic) Ubuntu Core Snap Packages
 
-These folders contain the Greengrass v2 Nucleus Classic Snap packages for Ubuntu Core
+This repository contains the Greengrass v2 Nucleus Classic Snap packages for Ubuntu Core.
+The primary Snapcraft project is at the repository root (`snapcraft.yaml`). The per-architecture
+folders (`amd64/`, `arm64/`, `armhf/`, `riscv64/`) are kept for reference and legacy local builds.
 
 ## Attribution
 
@@ -10,15 +12,10 @@ This project includes work derived from Amazon Web Services. See `LICENSE` and `
 - amd64 tested on Intel NUC N150 running generic Ubuntu Core 24 image from Canonical
 - armhf and riscv64 builds are included but not yet validated
 
-## Notes on base per architecture
+## Notes on base and architectures
 
-This snap is built and published per-architecture. The current bases are:
-- amd64: core24
-- arm64: core22
-- armhf: core22
-- riscv64: core22
-
-If you publish multiple architectures under the same snap name, each arch gets its own build/revision in the Snap Store.
+The root `snapcraft.yaml` uses `core22` for multi-architecture remote builds. If you publish multiple architectures
+under the same snap name, each arch gets its own build/revision in the Snap Store.
 
 ## Building the snap
 
@@ -33,27 +30,20 @@ Install necessary tools
 ```bash
 sudo apt install findutils python3-dev python3-venv wget
 ```
-Create a new folder in your home folder (e.g. `/home/user/mysnaps/iotconnect-gg-nucleus`)
-
-Change to the folder you just created and initialize snapcraft
+For a local build, run Snapcraft from the repository root (where `snapcraft.yaml` lives):
 
 ```bash
-mkdir -p ~/mysnaps/iotconnect-gg-nucleus
-cd ~/mysnaps/iotconnect-gg-nucleus
-snapcraft init
+cd /home/mlamp/dev/edge/greengrass/aws-greengrass-snap
+snapcraft
 ```
 
-Copy all files from the `amd64`, `arm64`, `armhf`, or `riscv64` directory in this repository to your local machine. The `snapcraft init` command from the previous step creates a default `snapcraft.yaml` file - replace that default file with the one in this repository.
+For remote builds (Launchpad), run from the repository root:
 
 ```bash
-cp -r  ~/git/aws-greengrass-snap/amd64/* ~/mysnaps/iotconnect-gg-nucleus
+snapcraft remote-build --launchpad-accept-public-upload
 ```
 
-Run the following script to build the new snap
-
-```bash
-./build.sh
-```
+To build a single architecture (for example amd64), add `--build-for=amd64`.
 
 ## Installation
 

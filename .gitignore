@@ -8,3 +8,4 @@ local-ui/data/uploads/
 # Local build artifacts
 Temp/
 *.snap
+.remote-build-*/
