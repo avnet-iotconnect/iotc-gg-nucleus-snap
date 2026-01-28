@@ -2,8 +2,6 @@
 
 This guide walks you through installing the **iotconnect-gg-nucleus** snap on Ubuntu Core and onboarding a Greengrass **Nucleus Classic** device using an /IOTCONNECT connection kit. It also highlights the value each platform adds to the other.
 
-<img src="https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-greengrass-demos/main/stm32mp135f-dk/media/STM32MP135x-DK_w_gg.png" width="360" alt="Greengrass device with /IOTCONNECT" />
-
 ## Why Greengrass + /IOTCONNECT
 
 **Greengrass value for /IOTCONNECT users**
@@ -20,7 +18,6 @@ This guide walks you through installing the **iotconnect-gg-nucleus** snap on Ub
 
 ### Hardware
 - An Ubuntu Core device (Raspberry Pi, Intel NUC, etc.) with network access
-<img src="https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-greengrass-demos/main/stm32mp135f-dk/media/stm32mp135F-dk_board_setup.png" width="700" alt="Example device setup connections" />
 
 ### Software
 - /IOTCONNECT account with AWS backend
