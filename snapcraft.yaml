@@ -113,10 +113,28 @@ parts:
       touch $CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/blacklisted.certs
 
       # The OpenJDK package provides cacerts as an external symlink; replace it with a real file.
-      if [ -L "$CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/cacerts" ]; then
-        rm -f "$CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/cacerts"
-        cp "$CRAFT_PART_INSTALL/etc/ssl/certs/java/cacerts" \
-          "$CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/cacerts"
+      CACERTS_FILE="$CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/cacerts"
+      if [ -L "$CACERTS_FILE" ]; then
+        rm -f "$CACERTS_FILE"
+      fi
+      if [ ! -f "$CACERTS_FILE" ]; then
+        CACERTS_SRC=""
+        for candidate in \
+          "$CRAFT_PART_INSTALL/etc/ssl/certs/java/cacerts" \
+          "/etc/ssl/certs/java/cacerts" \
+          "/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/cacerts" \
+          "/usr/lib/jvm/java-11-openjdk/lib/security/cacerts"
+        do
+          if [ -f "$candidate" ]; then
+            CACERTS_SRC="$candidate"
+            break
+          fi
+        done
+        if [ -z "$CACERTS_SRC" ]; then
+          echo "ERROR: Unable to locate Java cacerts source file."
+          exit 1
+        fi
+        cp "$CACERTS_SRC" "$CACERTS_FILE"
       fi
 
     organize:
