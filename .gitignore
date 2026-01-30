@@ -9,3 +9,4 @@ local-ui/data/uploads/
 Temp/
 *.snap
 .remote-build-*/
+snapcraft-*.txt
