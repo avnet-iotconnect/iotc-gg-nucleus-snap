@@ -8,8 +8,8 @@ confinement: strict
 grade: stable
 
 environment:
-  PATH: $SNAP/docker/bin:$PATH
-  PYTHONPATH: $SNAP/lib/python3.12/site-packages:$PYTHON_PATH
+  PATH: $SNAP/usr/bin:$SNAP/bin:$SNAP/docker/bin:$PATH
+  PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$SNAP/usr/lib/python3.10/dist-packages:$SNAP/lib/python3.10/site-packages:$PYTHONPATH
   JAVA_HOME: $SNAP/usr/lib/jvm/java-11-openjdk-$SNAP_ARCH
 
 platforms:
