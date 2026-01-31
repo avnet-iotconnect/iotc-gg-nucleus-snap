@@ -1,5 +1,5 @@
 name: iotconnect-gg-nucleus
-version: '2.14.3'
+version: '2.16.1'
 summary: Greengrass v2 Nucleus configurator for Ubuntu Core
 description: A Python application to configure and install Greengrass v2 (compatible with AWS IoT Greengrass)
 
@@ -93,7 +93,7 @@ parts:
       # Create directory and download Greengrass installer
       mkdir -p $CRAFT_PART_INSTALL/opt/greengrass
       wget -O $CRAFT_PART_INSTALL/opt/greengrass/greengrass-nucleus.zip \
-        https://d2s8p88vqu9w66.cloudfront.net/releases/greengrass-2.14.3.zip
+        https://d2s8p88vqu9w66.cloudfront.net/releases/greengrass-2.16.1.zip
 
       # Ensure Python script is executable and in correct location
       mkdir -p $CRAFT_PART_INSTALL/bin
