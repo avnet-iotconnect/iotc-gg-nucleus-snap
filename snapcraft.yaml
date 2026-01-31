@@ -13,8 +13,6 @@ environment:
   JAVA_HOME: $SNAP/usr/lib/jvm/java-11-openjdk-$SNAP_ARCH
 
 platforms:
-  riscv64:
-  armhf:
   arm64:
   amd64:
 
@@ -86,6 +84,8 @@ parts:
       - openjdk-11-jre-headless
     build-packages:
       - wget
+      - ca-certificates-java
+      - openjdk-11-jre-headless
     override-build: |
       # Run default Python plugin build first
       craftctl default
@@ -112,29 +112,19 @@ parts:
       rm -f $CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/blacklisted.certs
       touch $CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/blacklisted.certs
 
-      # The OpenJDK package provides cacerts as an external symlink; replace it with a real file.
-      CACERTS_FILE="$CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/cacerts"
-      if [ -L "$CACERTS_FILE" ]; then
-        rm -f "$CACERTS_FILE"
+      # The OpenJDK package provides cacerts as an external symlink; generate and copy a real file.
+      update-ca-certificates -f || true
+      if command -v update-ca-certificates-java >/dev/null 2>&1; then
+        update-ca-certificates-java -f || true
       fi
-      if [ ! -f "$CACERTS_FILE" ]; then
-        CACERTS_SRC=""
-        for candidate in \
-          "$CRAFT_PART_INSTALL/etc/ssl/certs/java/cacerts" \
-          "/etc/ssl/certs/java/cacerts" \
-          "/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/cacerts" \
-          "/usr/lib/jvm/java-11-openjdk/lib/security/cacerts"
-        do
-          if [ -f "$candidate" ]; then
-            CACERTS_SRC="$candidate"
-            break
-          fi
-        done
-        if [ -z "$CACERTS_SRC" ]; then
-          echo "ERROR: Unable to locate Java cacerts source file."
-          exit 1
-        fi
-        cp "$CACERTS_SRC" "$CACERTS_FILE"
+
+      CACERTS_FILE="$CRAFT_PART_INSTALL/usr/lib/jvm/java-11-openjdk-${ARCH}/lib/security/cacerts"
+      rm -f "$CACERTS_FILE"
+      if [ -f "/etc/ssl/certs/java/cacerts" ]; then
+        cp "/etc/ssl/certs/java/cacerts" "$CACERTS_FILE"
+      else
+        echo "ERROR: Unable to locate /etc/ssl/certs/java/cacerts after update."
+        exit 1
       fi
 
     organize:
