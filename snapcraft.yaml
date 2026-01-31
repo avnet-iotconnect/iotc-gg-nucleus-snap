@@ -82,6 +82,7 @@ parts:
       - ca-certificates
       - ca-certificates-java
       - openjdk-11-jre-headless
+      - python3-pip
     build-packages:
       - wget
       - ca-certificates-java
